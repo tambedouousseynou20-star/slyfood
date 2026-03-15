@@ -1,0 +1,7 @@
+{
+  "name": "SalyFood",
+  "description": "Food discovery and ordering platform for Saly and Mbour, Senegal. Discover restaurants, cafés, and snacks.",
+  "requestFramePermissions": [
+    "geolocation"
+  ]
+}

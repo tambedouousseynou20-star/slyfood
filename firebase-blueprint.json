@@ -1,0 +1,152 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "User profile information",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string" },
+        "email": { "type": "string", "format": "email" },
+        "displayName": { "type": "string" },
+        "photoURL": { "type": "string" },
+        "role": { "type": "string", "enum": ["customer", "restaurant", "admin"] },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["uid", "email", "role"]
+    },
+    "Business": {
+      "title": "Business",
+      "description": "Restaurant or food business profile",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "ownerId": { "type": "string" },
+        "name": { "type": "string" },
+        "description": { "type": "string" },
+        "category": { "type": "string", "enum": ["restaurant", "glacier", "cafe", "snack"] },
+        "city": { "type": "string", "enum": ["Saly", "Mbour"] },
+        "address": { "type": "string" },
+        "phone": { "type": "string" },
+        "photos": { "type": "array", "items": { "type": "string" } },
+        "rating": { "type": "number" },
+        "reviewCount": { "type": "integer" },
+        "priceRange": { "type": "string", "enum": ["$", "$$", "$$$", "$$$$"] },
+        "openingHours": { "type": "object" },
+        "deliveryAvailable": { "type": "boolean" },
+        "deliveryFee": { "type": "number" },
+        "subscriptionPlan": { "type": "string", "enum": ["basic", "standard", "premium"] },
+        "status": { "type": "string", "enum": ["pending", "approved", "rejected"] },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["ownerId", "name", "category", "city", "status"]
+    },
+    "MenuItem": {
+      "title": "MenuItem",
+      "description": "An item on a business menu",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "businessId": { "type": "string" },
+        "name": { "type": "string" },
+        "description": { "type": "string" },
+        "price": { "type": "number" },
+        "photo": { "type": "string" },
+        "category": { "type": "string" },
+        "available": { "type": "boolean" }
+      },
+      "required": ["businessId", "name", "price"]
+    },
+    "Order": {
+      "title": "Order",
+      "description": "A food order",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "customerId": { "type": "string" },
+        "businessId": { "type": "string" },
+        "items": { "type": "array" },
+        "total": { "type": "number" },
+        "deliveryFee": { "type": "number" },
+        "type": { "type": "string", "enum": ["pickup", "delivery"] },
+        "status": { "type": "string", "enum": ["sent", "accepted", "preparing", "ready", "delivered", "cancelled"] },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["customerId", "businessId", "items", "total", "type", "status"]
+    },
+    "Reservation": {
+      "title": "Reservation",
+      "description": "A table reservation",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "customerId": { "type": "string" },
+        "businessId": { "type": "string" },
+        "date": { "type": "string", "format": "date-time" },
+        "guests": { "type": "integer" },
+        "status": { "type": "string", "enum": ["pending", "confirmed", "cancelled"] },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["customerId", "businessId", "date", "guests", "status"]
+    },
+    "Review": {
+      "title": "Review",
+      "description": "A customer review for a business",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "customerId": { "type": "string" },
+        "customerName": { "type": "string" },
+        "businessId": { "type": "string" },
+        "rating": { "type": "integer" },
+        "comment": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["customerId", "businessId", "rating", "comment"]
+    },
+    "Notification": {
+      "title": "Notification",
+      "description": "A notification for a user",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "userId": { "type": "string" },
+        "title": { "type": "string" },
+        "message": { "type": "string" },
+        "type": { "type": "string", "enum": ["order", "reservation", "system"] },
+        "read": { "type": "boolean" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "title", "message", "type", "read"]
+    }
+  },
+  "firestore": {
+    "users": {
+      "schema": "User",
+      "description": "User profiles"
+    },
+    "businesses": {
+      "schema": "Business",
+      "description": "Food businesses"
+    },
+    "businesses/{businessId}/menu": {
+      "schema": "MenuItem",
+      "description": "Menu items for a business"
+    },
+    "businesses/{businessId}/reviews": {
+      "schema": "Review",
+      "description": "Reviews for a business"
+    },
+    "orders": {
+      "schema": "Order",
+      "description": "Food orders"
+    },
+    "reservations": {
+      "schema": "Reservation",
+      "description": "Table reservations"
+    },
+    "notifications": {
+      "schema": "Notification",
+      "description": "User notifications"
+    }
+  }
+}
